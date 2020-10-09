@@ -23,8 +23,8 @@ exports.find = (id) => {
 
 exports.delete = (id) => {
   return knex('tasks')
-    .delete()
-    .where('id', id);
+    .where('id', id)
+    .delete();
 }
 
 exports.updateTaskStatus = (id) => {

@@ -1,9 +1,10 @@
 const Task = require('../models/Task');
 
-exports.store = async (req, res) => {
+exports.store =  (req, res) => {
   let task = {};
   task.description = req.body.description;
-  await Task.create(task).then((id) => {
+
+  Task.create(task).then((id) => {
     console.log('Task created with id: ', id);
     console.log('Task: ', task.description)
     res.json('Tarea creada');
@@ -11,63 +12,59 @@ exports.store = async (req, res) => {
 
 }
 
-exports.getTasks = async (req, res) => {
-  await Task.all().then((data) => {
+exports.getTasks =  (req, res) => {
+  Task.all().then((data) => {
     let tasks = data;
     res.json(tasks);
   });
 }
+
+exports.getOneTask = (req, res) => {
+
+  let id = req.params.id;
+
+  Task.find(id).then((task) => {
+
+      if(!task){
+          res.status(404).send('No se encontró');
+          return;
+      }
+
+      res.json(task);
+
+  });
+
+}
+
 
 exports.updateTaskStatus = (req, res) => {
   let id = req.params.id;
 
   Task.updateTaskStatus(id).then((id) => {
     console.log('Se cambió el status a done');
-    if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-      res.json({ id: id });
-    } else {
-      res.redirect("/");
-    }
+    res.json('Status done');
   });
 
 }
 
-exports.updateTaskStatusAjax = (req, res) => {
 
-  let id = req.body.id;
+exports.deleteTask = (req, res) => {
 
-  Task.updateTaskStatus(id).then((task) => {
-    console.log('Se cambio estatus a done ajax')
-    if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-      res.json({ id: id });
-    } else {
-      res.redirect("/");
-    }
-  });
+    let id = req.params.id;
+    
+    Task.find(id).then((task) => {
 
-}
+        if(!task){
+            return;
+        }
 
-exports.delete = (req, res) =>{
+        Task.delete(task.id).then((id) => {
+            res.json('Task deleted');
+        });
 
-  let id = req.params.id;
-
-  Task.find(id).then((task) => {
-
-    if(!task){
-      return;
-    }
-
-    Task.delete(task.id).then((id) => {
-      if (req.xhr || req.headers.accept.indexOf("json") > -1) {
-        res.json({ id: id });
-      } else {
-        res.redirect("/");
-      }
     });
 
-  });
-
 }
-  
+
 
 
