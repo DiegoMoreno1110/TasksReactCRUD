@@ -18,10 +18,10 @@ const TaskList = () => {
         });
     }
 
-    const postTask =  async(event) => {
+    const postTask =  (event) => {
         event.preventDefault();
     
-        await axios
+        axios
           .post(`http://localhost:8000/tasks`, {
             description: description,
           })
@@ -33,6 +33,7 @@ const TaskList = () => {
             console.log(err);
           });
     };
+
 
     const fetchTask = async () => {
         const result = await axios('http://localhost:8000/tasks');
@@ -81,7 +82,6 @@ const TaskList = () => {
                     task={task}
                 />
             ))}
-
         </Fragment>
         
     );

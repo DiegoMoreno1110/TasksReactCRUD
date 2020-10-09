@@ -1,6 +1,42 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const Task = ({task}) => {
+
+    const [statusDone, setStatusDone] = useState(false);
+
+    const deleteTask = (e) => {
+        e.preventDefault();
+
+        axios.delete(`http://localhost:8000/tasks/${task.id}`)
+        .then((res) => {
+            console.log("Task deleted: ", task);            
+        })
+        .catch((err) => {
+            console.log(err);                
+ 
+        });
+
+    }
+
+    const updateStatusTask = (e) => {
+        e.preventDefault();
+
+        axios.put(`http://localhost:8000/tasks/${task.id}`)
+        .then((res) => {
+            console.log("Task updated status: ", task);  
+                     
+        })
+        .catch((err) => {
+            console.log(err);                
+ 
+        });
+
+    }
+
+    useEffect(() => {
+    },[]);
+
     return ( 
         <div className="container">
                 <div className="row">
@@ -13,17 +49,23 @@ const Task = ({task}) => {
                                 <div className="container">
                                     <div className="row">
                                             <div className="col">
-                                                <form>
-                                                    <input 
-                                                        type="submit" 
-                                                        value="Done"
-                                                        className="btn btn-success"
-                                                    />
-                                                </form>
+
+                                                
+                                                    
+                                                    <form onSubmit={updateStatusTask}>
+                                                        <input 
+                                                            type="submit" 
+                                                            value="Done"
+                                                            className="btn btn-success"
+                                                        />
+                                                    </form>
+                                                
+                                                
+
                                             </div> 
                                         
-                                        <div className="col">
-                                            <form>
+                                        <div className="col" onSubmit={deleteTask}>
+                                            <form >
                                                 <input 
 
                                                     type="submit" 
