@@ -1,13 +1,17 @@
-let express = require('express');
-let app = express();
+const express = require('express');
+const webRoutes = require('./routes/web');
+
+const app = express();
 const cors = require('cors');
 let bodyParser = require('body-parser');
 
-let appConfig = require('./configs/app');
+const appConfig = require('./configs/app');
 
 
 app.use(cors());
 app.use(express.json());
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -17,9 +21,34 @@ app.use(
     })
 );
 
-app.use('/tasks', require('./routes/tasks'));
+app.use('/tasks', require('./routes/web'));
 
-app.listen(appConfig.express_port,() => {
-    let show = 'App listening on port ' + appConfig.express_port + '! (http://localhost:' + appConfig.express_port +')';
-    console.log(show);
+/*
+let methodOverride = require('method-override')
+app.use(methodOverride('_method'));
+
+const exphbs = require('express-handlebars');
+const hbshelpers = require("handlebars-helpers");
+const multihelpers = hbshelpers();
+const extNameHbs = 'hbs';
+const hbs = exphbs.create({
+  extname: extNameHbs,
+  helpers: multihelpers
+});
+
+
+app.engine(extNameHbs, hbs.engine);
+app.set('view engine', extNameHbs);
+app.use(express.static('public'));
+*/
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+
+
+app.use('/', webRoutes);
+
+
+app.listen(appConfig.expressPort, () => {
+  console.log(`Server is listenning on ${appConfig.expressPort}! (http://localhost:${appConfig.expressPort})`);
 });

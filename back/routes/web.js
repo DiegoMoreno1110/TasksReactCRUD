@@ -1,11 +1,14 @@
 const router = require('express').Router();
-const { store, getTasks, getOneTask, updateTaskStatus, deleteTask } = require('../controllers/TasksController');
+const tasksController = require('../controllers/TasksController');
 
+const { store, getTasks } = require('../controllers/TasksController');
+
+//router.get('/', homepageController.index);
 
 router.route('/').post(store).get(getTasks);
-router.route('/:id').get(getOneTask);
-router.route('/update/:id').post(updateTaskStatus);
-router.route('/delete/:id').post(deleteTask);
 
+router.post('/tasks/update/:id', tasksController.updateTaskStatus);
+
+router.post('/tasks/delete/:id', tasksController.delete);
 
 module.exports = router;

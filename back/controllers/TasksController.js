@@ -23,13 +23,31 @@ exports.updateTaskStatus = (req, res) => {
 
   Task.updateTaskStatus(id).then((id) => {
     console.log('Se cambió el status a done');
+    if (req.xhr || req.headers.accept.indexOf("json") > -1) {
       res.json({ id: id });
-   
+    } else {
+      res.redirect("/");
+    }
   });
 
 }
 
-exports.deleteTask = (req, res) =>{
+exports.updateTaskStatusAjax = (req, res) => {
+
+  let id = req.body.id;
+
+  Task.updateTaskStatus(id).then((task) => {
+    console.log('Se cambio estatus a done ajax')
+    if (req.xhr || req.headers.accept.indexOf("json") > -1) {
+      res.json({ id: id });
+    } else {
+      res.redirect("/");
+    }
+  });
+
+}
+
+exports.delete = (req, res) =>{
 
   let id = req.params.id;
 
@@ -40,28 +58,16 @@ exports.deleteTask = (req, res) =>{
     }
 
     Task.delete(task.id).then((id) => {
+      if (req.xhr || req.headers.accept.indexOf("json") > -1) {
+        res.json({ id: id });
+      } else {
         res.redirect("/");
+      }
     });
 
   });
 
 }
+  
 
-
-exports.getOneTask = (req, res) => {
-
-    let id = req.params.id;
-
-    Task.find(id).then((task) => {
-
-        if(!task){
-            res.status(404).send('No se encontró');
-            return;
-        }
-
-        res.json(task)
-
-    });
-
-}
 
