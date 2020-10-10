@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";  
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 
 const TaskInfo = () => {
@@ -25,6 +26,13 @@ const TaskInfo = () => {
         <div>
             <p>Descripcion: {task.description}</p>
             <p>Status: {task.status}</p>
+            <Link to={`/`}>
+                <input 
+                    type="submit" 
+                    value="Back"
+                    className="btn btn-secondary"
+                />
+            </Link>
         </div>
     );
 }

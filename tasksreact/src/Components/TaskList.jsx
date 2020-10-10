@@ -43,7 +43,7 @@ const TaskList = () => {
 
     useEffect(() => {
         fetchTask()
-    }, []);
+    }, [task]);
 
     return ( 
         <Fragment>
