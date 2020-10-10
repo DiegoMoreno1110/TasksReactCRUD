@@ -26,7 +26,6 @@ const Task = ({task}) => {
         axios.put(`http://localhost:8000/tasks/${task.id}`)
         .then((res) => {
             console.log("Task updated status: ", task);  
-                     
         })
         .catch((err) => {
             console.log(err);                
@@ -38,11 +37,13 @@ const Task = ({task}) => {
     useEffect(() => {
     },[]);
 
+    //'card my-3'
+
     return ( 
         <div className="container">
                 <div className="row">
                     <div className="col-lg-12">
-                        <div className='card my-3'>
+                        <div className={task.status === 'done' ? "card my-3 bg-light" : "card my-3" } >
                             <div className="card-body">
                                 <p className="card-text">
                                     {task.description}
@@ -51,7 +52,8 @@ const Task = ({task}) => {
                                     <div className="row">
                                             <div className="col">
 
-                                                
+                                                { task.status === 'done' ? null
+                                                    :
                                                     
                                                     <form onSubmit={updateStatusTask}>
                                                         <input 
@@ -60,7 +62,7 @@ const Task = ({task}) => {
                                                             className="btn btn-success"
                                                         />
                                                     </form>
-                                                
+                                                }
                                                 
 
                                             </div> 
